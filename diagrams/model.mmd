@@ -1,0 +1,67 @@
+classDiagram
+    class Range~T~ {
+        +min
+        +max
+        +contains(value) bool
+    }
+
+    class Parameter~T~ {
+        -id_
+        -label_
+        -value_
+        -unit_
+        +id()
+        +label()
+        +value()
+        +unit()
+        +setValue(value)
+    }
+
+    class CheckResult {
+        +parameterId
+        +message
+        +severity
+    }
+
+    class ICheckRule {
+        <<interface>>
+        +check() CheckResult
+    }
+
+    class RangeRule~T~ {
+        -parameter_
+        -normalRange_
+        -problemMessage_
+        +check() CheckResult
+    }
+
+    ICheckRule <|.. RangeRule~T~
+    RangeRule~T~ --> Parameter~T~
+    RangeRule~T~ --> Range~T~
+    RangeRule~T~ ..> CheckResult
+
+    class DispatcherModel {
+        +addElement(element)
+        +collectSummaries()
+        +collectVisualDescriptors()
+    }
+
+    class ISystemElement {
+        <<interface>>
+        +summary()
+        +status()
+    }
+
+    class Robot
+    class SafetyZone
+    class RobotPath
+    class Alarm
+    class ARRobotHint
+
+    ISystemElement <|.. Robot
+    ISystemElement <|.. SafetyZone
+    ISystemElement <|.. RobotPath
+    ISystemElement <|.. Alarm
+    ISystemElement <|.. ARRobotHint
+
+    DispatcherModel o-- ISystemElement
